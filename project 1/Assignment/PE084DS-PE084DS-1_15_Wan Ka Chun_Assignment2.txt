@@ -1,0 +1,81 @@
+# Q1
+import pandas as pd
+year=pd.Index(['2018','2019','2020','2021','2022'])
+ans1=year # Q1(a)
+
+sales = pd.Series([3500, 3650, 1200, 1000, 1800],index=[year])
+ans2=sales # Q1(b)
+
+expenses=pd.Series([2500, 2550, 2200, 1500, 2000],index=[year])
+ans3=expenses # Q1(c)
+
+sales=sales.to_frame(name='Sales')
+expenses=expenses.to_frame(name='Expenses')
+df_account=pd.concat([sales,expenses],axis=1)
+ans4=df_account.copy() # Q1(d)
+
+import numpy as np
+df_account.loc[df_account.index, 'Profit'] = df_account['Sales'] - df_account['Expenses']
+ans5=df_account # Q1(e)
+
+
+
+
+fiscal_year=pd.Series(year,index=[year])
+fiscal_year=fiscal_year.to_frame(name='Fiscal Year')
+df_account=pd.concat([df_account,fiscal_year],axis=1)
+
+
+
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+
+fig, ax1 = plt.subplots(1,1)
+plt.grid()
+
+
+x = df_account['Fiscal Year']
+y1 = df_account['Sales']
+y2 = df_account['Expenses']
+y3 = df_account['Profit']
+
+l1 = ax1.plot(x, y1,label='Sales')
+
+
+with mpl.rc_context({'lines.linewidth': 2, 'lines.linestyle': '--'}):
+    l2 = ax1.plot(x, y2,label='Expenses')
+
+bar1 = ax1.bar(x, y3, width=0.8, edgecolor="white",label='Profit')
+
+plt.xlabel("Fiscal Year")
+plt.ylabel("HKD (Mil)")
+plt.title("Financial Report 2018-2022")
+plt.legend()
+
+
+
+
+print('Answer of Question 1(a) is:') ; 
+print(ans1)
+print('With type',type(ans1))
+print() ; print() ; print()
+print('Answer of Question 1(b) is:') ; 
+print(ans2)
+print('With type',type(ans2))
+print() ; print() ; print()
+print('Answer of Question 1(c) is:') ; 
+print(ans3)
+print('With type',type(ans3))
+print() ; print() ; print()
+print('Answer of Question 1(d) is:') ; 
+print(ans4)
+print('With type',type(ans4))
+print() ; print() ; print()
+print('Answer of Question 1(e) is:') ; 
+print(ans5)
+print('With type',type(ans5))
+print() ; print() ; print()
+print('Answer of Question 1(f) is:') ; plt.show() # Q1(f)

@@ -1,0 +1,46 @@
+# Q1
+print('Q1')
+import numpy as np
+arr=np.array([1.2,1.4,1.6,1.8,2.3,2.5,2.7,2.9,3.4,3.6,3.8,4.0],dtype='float32')
+arr=arr.reshape(3,4)
+print('the Numpy array named arr is\n',arr)
+print() ; print('Q2')
+# Q2
+print("arr’s shape is\n",arr.shape,",and")
+print("arr’s dtype is\n",arr.dtype)
+print() ; print('Q3')
+# Q3
+arr_sqrt=np.sqrt(arr)
+print('the square root of the arr is\n',arr_sqrt)
+print() ; print('Q4')
+# Q4
+arr2=arr > 2.7
+print('the new Boolean array named arr2 is\n',arr2)
+print() ; print('Q5')
+# Q5
+arr_cal=np.round(arr*3-2,3)
+print('the array named arr_cal is\n',arr_cal)
+print() ; print('Q6')
+# Q6
+max=arr.max()
+mean=arr.mean()
+std=arr.std()
+print('arr max value is:\n',max,',')
+print('arr mean value is:\n',mean,',and')
+print('arr standard deviation value is:\n',std)
+print() ; print('Q7')
+# Q7
+mult=arr[0,2]*arr[2,0]
+print('the first number is: \n',arr[0,2],',and')
+print('the another number is: \n',arr[2,0],',and')
+print('their multiplication value is\n',mult)
+print() ; print('Q8')
+# Q8
+t=arr.T
+print('the transpose of arr is\n',t)
+print() ; print('Q9')
+# Q9
+first=arr.reshape(2,6)
+arr_flat=arr.reshape(-1)
+print('The (2,6) structure is\n',first,',and')
+print('The value after flatten is\n',arr_flat)

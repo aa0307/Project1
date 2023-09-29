@@ -1,0 +1,32 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.read_csv("GOOG.csv")
+
+import numpy as np
+df = pd.DataFrame(data)
+y= pd.DatetimeIndex(df['Date'])
+df = df.drop(['Date'],axis=1)
+df = df.set_index([y])
+y= df.index
+y = pd.DataFrame(y,dtype=str)
+y=np.array(y)
+y=np.squeeze(y)
+
+
+fig,(ax1,ax2) = plt.subplots(2,1,sharex=True)
+x1=df.drop(['Open','High','Low','Close','Volume'],axis=1)
+ax1.plot(y,x1)
+ax1.set_ylabel('Share Price')
+plt.suptitle('Alphabet inc. GOOG')
+x2=np.array(df.drop(['Open','High','Low','Close','Adj Close'],axis=1))
+x2=np.squeeze(x2)
+ax2.bar(y,x2,color='silver')
+ax2.set_ylabel('Daily volume')
+for ax in ax1, ax2:
+    ax.grid(True)
+    ax.label_outer()
+fig.autofmt_xdate()
+fig.set_figwidth(15)
+fig.set_figheight(10)
+plt.show()

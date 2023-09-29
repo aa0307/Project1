@@ -1,0 +1,97 @@
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import seaborn as sns
+import plotly.express as px
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.model_selection import train_test_split
+# Answer of Question A
+df = pd.read_csv('API_SP.DYN.LE00.IN_DS2_en_csv_v2_5795729.csv')
+pd.options.display.max_rows = 9999
+df=pd.DataFrame(df)
+df1=df['Country Name']
+df_T=df.T
+HKG = df.loc[df['Country Code'] == "HKG"]
+HKG = HKG.drop(['Country Name','Country Code','Indicator Name','Indicator Code'],axis=1)
+HKG = HKG.T
+year = pd.Series(HKG.index,index=HKG.index,dtype=int)
+year=year.to_frame(name='Year')
+HKG.rename(columns={ HKG.columns[0]: "Age" }, inplace = True)
+age = HKG
+df = pd.concat([year,age],axis=1)
+df.drop(['2021','2022'], inplace = True)
+df.reset_index(inplace=True, drop=True)
+print('Answer of Question A is: \n', df)
+# Answer of Question B
+x=df['Year']
+y=df['Age']
+parameter = np.polyfit(x,y,1)
+y2 = parameter[0] * x + parameter[1]
+plt.scatter(x,y)
+plt.plot(x,y2,color='C1')
+plt.show()
+print('Answer of Question B is: \n y= ',parameter[0],'x+',parameter[1])
+# Answer of Question C
+df_for_question_C = df
+future_2025 = 5
+def future(df, future):
+    df['Prediction'] = df[['Age']].shift(-future)
+    X = np.array(df.drop(['Prediction'],axis=1))[:-future]
+    y = np.array(df['Prediction'])[:-future]
+    i=future
+    df['Year'] = df[['Year']].shift(-i).ffill()
+    while i > 0:
+        df.iloc[-i, df.columns.get_loc('Year')]=df.iloc[-i-1, df.columns.get_loc('Year')]+1
+        i-=1
+    X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.25)
+    tree = DecisionTreeRegressor().fit(X_train, y_train)
+    X_future = df.drop('Prediction',axis=1)[:-future]
+    X_future = X_future.tail(future)
+    X_future = np.array(X_future)
+    tree_prediction = tree.predict(X_future)
+    valid = df[X.shape[0]:]
+    valid['Prediction'] = tree_prediction
+    df.fillna(valid,inplace=True)
+    plt.figure(figsize=(16,8))
+    plt.title('life expectancy in year 2025')
+    plt.xlabel("Year")
+    plt.ylabel('Age')
+    plt.plot(df['Age'])
+    plt.plot(valid[['Age','Prediction']])
+    plt.legend(['Orig','Val','Pred'])
+    plt.show()
+future(df_for_question_C, future_2025)
+print('Answer of Question C is: \n', df_for_question_C.tail(5), '\n')
+
+# Answer of Question D
+print('Answer of Question D is: \n')
+figd,axd = plt.subplots()
+sns.set()
+sns.regplot(data=df,x=df['Year'],y=df['Age'],ax=axd)
+plt.show()
+# Answer of Question E
+print('Answer of Question E is: \n')
+fige = go.Figure(px.scatter(df, x="Year", y="Age", trendline="ols"))
+fige.show()
+# Answer of Question F
+print('Answer of Question F : \n\n ',
+      'It was founded that the values of the slope in part (e) is the same as the slope in part (b) \n')
+# Answer of Question G
+print('Answer of Question G : \n\n A trendline is most reliable when its R-squared value is at or near 1. \n',  
+      'Which means that if the R-squared value is closer to 1, the line is fit better to the data. \n'  ,
+      'It also means that the data distrubution is lesser.')
+sns.set()
+sns.regplot(data=df,x=df['Year'],y=df['Age'],ax=axd)
+plt.show()
+# Answer of Question E
+print('Answer of Question E is: \n')
+fige = go.Figure(px.scatter(df, x="Year", y="Age", trendline="ols"))
+fige.show()
+# Answer of Question F
+print('Answer of Question F : \n\n ',
+      'It was founded that the values of the slope in part (e) is the same as the slope in part (b) \n')
+# Answer of Question G
+print('Answer of Question G : \n\n A trendline is most reliable when its R-squared value is at or near 1. \n',  
+      'Which means that if the R-squared value is closer to 1, the line is fit better to the data. \n'  ,
+      'It also means that the data distrubution is lesser.')
